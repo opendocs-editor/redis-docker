@@ -42,9 +42,15 @@ ADD ${REDIS_MAJOR}/build-fix-* /build/
 #RUN patched_glibc=glibc-linux4-2.33-4-x86_64.pkg.tar.zst && \
 #    curl -LO "https://repo.archlinuxcn.org/x86_64/$patched_glibc" && \
 #    bsdtar -C / -xvf "$patched_glibc"
-RUN /build/deps/readies/bin/getbash
-RUN /build/deps/readies/bin/getpy3
-RUN /build/system-setup.py
+
+RUN set -ex && \
+	apt-get update && \
+	apt-get -y install bash
+
+SHELL [ "/bin/bash", "-c" ]
+
+RUN /bin/bash /build/deps/readies/bin/getpy3
+RUN /usr/bin/env python3 /build/system-setup.py
 RUN gcc --version
 
 ENV GOSU_VERSION 1.12
@@ -95,11 +101,13 @@ RUN set -xe; \
         addgroup --gid ${UID} redis && adduser --system --uid ${UID} redis ;\
     fi
 
+# COPY ${REDIS_MAJOR}/platforms/setup.${OSNICK} /usr/local/bin/docker-setup
+# RUN chmod +x /usr/local/bin/docker-setup
+# RUN /usr/local/bin/docker-setup
+# RUN rm /usr/local/bin/docker-setup
 
-COPY ${REDIS_MAJOR}/platforms/setup.${OSNICK} /usr/local/bin/docker-setup
-RUN chmod +x /usr/local/bin/docker-setup
-RUN /usr/local/bin/docker-setup
-RUN rm /usr/local/bin/docker-setup
+RUN apt-get update && \
+	apt-get -y install libatomic1 libssl1.1
 
 COPY --from=builder /usr/local/ /usr/local/
 

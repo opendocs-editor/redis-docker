@@ -28,9 +28,15 @@ ADD deps/ /build/deps/
 ADD 5.0/system-setup.py /build/
 
 # ENV REDIS_DEPENDS "ca-certificates dirmngr gnupg wget gcc libc6-dev make"
-RUN /build/deps/readies/bin/getbash
+# RUN /build/deps/readies/bin/getbash
+
+RUN apt-get update && \
+	apt-get -y install bash
+
+SHELL [ "/bin/bash", "-c" ]
+
 RUN /build/deps/readies/bin/getpy3
-RUN /build/system-setup.py
+RUN /usr/bin/env python3 /build/system-setup.py
 RUN gcc --version
 
 ENV GOSU_VERSION 1.12
@@ -94,10 +100,13 @@ RUN set -xe; \
     fi
 
 
-COPY 5.0/platforms/setup.${OSNICK} /usr/local/bin/docker-setup
-RUN chmod +x /usr/local/bin/docker-setup
-RUN /usr/local/bin/docker-setup
-RUN rm /usr/local/bin/docker-setup
+# COPY 5.0/platforms/setup.${OSNICK} /usr/local/bin/docker-setup
+# RUN chmod +x /usr/local/bin/docker-setup
+# RUN /usr/local/bin/docker-setup
+# RUN rm /usr/local/bin/docker-setup
+
+RUN apt-get update && \
+	apt-get -y install libatomic1
 
 COPY --from=builder /usr/local/ /usr/local/
 
