@@ -6,7 +6,7 @@ env:
   IMAGE_NAME: redis
 
 jobs:
-  build-6.2:
+  build-6-2:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,7 +38,7 @@ jobs:
           file: ./6.2/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-  build-6.0:
+  build-6-0:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -70,7 +70,7 @@ jobs:
           file: ./6.0/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
-  build-5.0:
+  build-5-0:
     runs-on: ubuntu-latest
     permissions:
       contents: read
