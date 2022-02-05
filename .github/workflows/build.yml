@@ -32,12 +32,15 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ghcr.io/opendocs-editor/redis:6.2
+          tags: ghcr.io/opendocs-editor/redis:6.2-${{ steps.date.outputs.date }}
           file: ./6.2/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
@@ -67,12 +70,15 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ghcr.io/opendocs-editor/redis:6.0
+          tags: ghcr.io/opendocs-editor/redis:6.0-${{ steps.date.outputs.date }}
           file: ./6.0/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
@@ -102,12 +108,15 @@ jobs:
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ github.repository }}
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: ghcr.io/opendocs-editor/redis:5.0
+          tags: ghcr.io/opendocs-editor/redis:5.0-${{ steps.date.outputs.date }}
           file: ./5.0/Dockerfile
           labels: ${{ steps.meta.outputs.labels }}
           platforms: linux/amd64,linux/arm64
